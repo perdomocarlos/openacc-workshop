@@ -31,7 +31,7 @@ SHELL := /bin/bash
 
 
 TARGET = vector
-EXT = .acc.c
+EXT = .c
 COMPILER = accull
 CFLAGS = -v
 
