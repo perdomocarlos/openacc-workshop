@@ -39,7 +39,7 @@ run: compile
 	@time ./$(TARGET)
 
 compile:
-	@$(COMPILER) $(TARGET)$(EXT) -o $(TARGET) $(CFLAGS)
+	@$(COMPILER) $(CFLAGS) -o $(TARGET) $(TARGET)$(EXT) 
 
 
 
