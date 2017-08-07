@@ -31,7 +31,7 @@ SHELL := /bin/bash
 
 
 TARGET = vector
-EXT = .c
+EXT = .acc.c
 COMPILER = accull
 CFLAGS = -v
 
@@ -39,7 +39,7 @@ run: compile
 	@time ./$(TARGET)
 
 compile:
-	@$(COMPILER) $(CFLAGS) -o $(TARGET) $(TARGET)$(EXT) 
+	@$(ACCULLBASE)$(COMPILER) $(CFLAGS) -o $(TARGET) $(TARGET)$(EXT) 
 
 clean:
 	@rm -rf yacf_* lextab* accull_* parser.out yacctab.py *.o support.ptx $(TARGET)
