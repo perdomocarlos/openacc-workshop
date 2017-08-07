@@ -39,7 +39,7 @@ run: compile
 	@time ./$(TARGET)
 
 compile:
-	@$(ACCULLBASE)$(COMPILER) $(CFLAGS) -o $(TARGET) $(TARGET)$(EXT) 
+	@$(ACCULLBASE)/$(COMPILER) $(CFLAGS) -o $(TARGET) $(TARGET)$(EXT) 
 
 clean:
 	@rm -rf yacf_* lextab* accull_* parser.out yacctab.py *.o support.ptx $(TARGET)
