@@ -1,13 +1,20 @@
-# Parallel Programming Approach
+# OpenACC Parallel Directive
 
 ## Objectives
 
-- [x] You will see how a parallel program actually runs on a computer.
-- [x] And how many cores does it use.
+- [x] You will learn to identify some cases where the automatic parallelization (**kernels** directive) is not usefull.
+- [x] You will learn to use the **parallel** directive
+- [x] You will learn to use the **loop** directive and the **independent** clause 
 
 ## Introdution
 
-Parallel programming allow to divide a big task in subtasks that in consequense can be performed in parallel by a parallel computer (PCs, Cluster, Supercomputer).
+As mentioned in the [1.kernels](https://github.com/DonAurelio/openacc-workshop/tree/master/1.kernels). OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. **This section is dedicated to the parallel directive**.
+
+* Send the data to be processed to the GPU memory.
+* When the calculation is finished in GPU, bring the data back to the CPU memory.
+* Check the GPU does what we expect.
+
+OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization).  The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization). **This section is dedicated to the kernels directive**.
 
 ## Example
 

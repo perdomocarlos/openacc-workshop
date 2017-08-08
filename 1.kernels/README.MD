@@ -19,13 +19,20 @@ in OpenACC
 #pragma acc directive-name clauses..
 ```
 
-However, OpenMP creates code to be executed in CPU and OpenACC to both CPU and GPU. When we program in GPU platforms we must to care about:
+Unlike OpenMP which creates code to be executed in CPU, OpenACC creates code to both CPU and GPU. When we program in GPU platforms we must to care about:
 
-* Send the data to be processed to the GPU memory.
-* When the calculation is finished in GPU, bring the data back to the CPU memory.
-* Check the GPU does what we expect.
+1. Send the data to be processed to the GPU memory.
+2. When the calculation is finished in GPU, bring the data back to the CPU memory.
+3. Check the GPU does what we expect.
 
-OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization).  The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization). **This section is dedicated to the kernels directive**.
+OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization). In this way the compiler:
+
+* **Tries** to identify which data in a **kernels region** is needed in the GPU memory.
+* Sends the data to the GPU memory.
+* **Tries** to carry out the requested calculations.
+* Sends the data and result back to the CPU memory.
+
+The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization) and move the required data to the GPU memory. **This section is dedicated to the kernels directive**.
 
 As follows is described the format to create a *kernels region* using the **kernels** directive.
 
