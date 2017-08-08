@@ -1,83 +1,176 @@
-# OpenACC Parallel Directive
+# OpenACC Kernels Directive
 
 ## Objectives
 
-- [x] You will learn to identify some cases where the automatic parallelization (**kernels** directive) is not usefull.
-- [x] You will learn to use the **parallel** directive
-- [x] You will learn to use the **loop** directive and the **independent** clause 
+- [x] You will learn how to create **kernels regions** and what is its purpose.
+- [x] You will learn how to use the **loop** directive and the **independent** clause 
 
 ## Introdution
 
-As mentioned in the [1.kernels](https://github.com/DonAurelio/openacc-workshop/tree/master/1.kernels). OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. **This section is dedicated to the parallel directive**.
-
-* Send the data to be processed to the GPU memory.
-* When the calculation is finished in GPU, bring the data back to the CPU memory.
-* Check the GPU does what we expect.
-
-OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization).  The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization). **This section is dedicated to the kernels directive**.
-
-## Example
-
-This code is the matrix multiplication code, given in a sequential approach. The objective of this example is to parallelize it with OpenMP. After that answer the questions.
-
-Edit the file *matrixmult.c*
-
-* Import the OpenMP funtions header 
+OpenACC works with the same format as OpenMP does
 
 ```c
-#include <omp.h>        /* OpenMP funtions header */
+#pragma omp directive-name clauses..
 ```
 
-* Replace this code
+in OpenACC
 
 ```c
-/* C = A x B */
-for(int i=0;i<N;i++){
-    for(int j=0;j<N;j++){
-        for(int k=0;k<N;k++){
-            C[i][j] += A[i][k] * B[k][j];
-        }
-    }
+#pragma acc directive-name clauses..
+```
+
+Unlike OpenMP which creates code to be executed in CPU, OpenACC creates code to both CPU and GPU. When we program in GPU platforms we must to care about:
+
+1. Send the data to be processed to the GPU memory.
+2. When the calculation is finished in GPU, bring the data back to the CPU memory.
+3. Check the GPU does what we expect.
+
+The **kernels** directive carries out the point 1 and 2 by us (this is called automatic paralelization). The **kernels** directive:
+
+* **Tries** to identify which data in a **kernels region** is needed in the GPU memory.
+* Sends the data to the GPU memory.
+* **Tries** to carry out the requested calculations.
+* Sends the data and result back to the CPU memory.
+
+So we must to carry out the 3 point, since not always the compiler does what we expect. The format of a **kernels** directive to create a **kernels región** is described as follows:
+
+```c
+// Kernels region
+#pragma acc kernels
+{
+    // Code to be parallelized here ..
 }
 ```
 
-* for that one
+## Exercise 1
+
+Veryfy your code runs correctly in a sequential approach.
+
+* Uncomment this line in your make file
+
+```make
+CFLAGS = -std=c++11 -O3
+```
+
+* Comment these lines
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30 -Minfo=accel
+```
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
+```
+* Run the *matrixmult.c* code
+
+```bash
+make run
+```
+
+### Questions
+
+* Take notes of the execution time.
+* Take notes of the validation.
+
+## Exercise 2
+
+Parallelize the code with the **kernels** directive.
+
+* Enclose the following section of code in a **kernels region**.
 
 ```c
-/* C = A x B */
-#pragma omp parallel shared(A,B,C)
-{
-    #pragma omp for 
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-            for(int k=0;k<N;k++){
-                C[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-} 
+/* Vector sum  */
+for(int j=0; j<N; ++j) C[j] = A[j] + B[j];
+
+/* Vector multiplicaion */
+for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
 ```
 
-* Add the compilation flag **-fopenmp** to the CFLAGS variable in your *Makefile*. To enable OpenMP in the code.
+* Uncomment this line in your make file
 
-```basemake
-CFLAGS = -std=gnu++11 -O3 -fopenmp
+```make
+CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
 ```
 
-* Run the following command in one **Terminal**
+* Comment these lines
+
+```make
+# CFLAGS = -std=c++11 -O3
+```
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30 -Minfo=accel
+```
+
+* Run the code
 
 ```bash
-htop 
+make run
 ```
 
-Then, run the *matrixmult.c* code in another *Terminal* as follows, and quickly check the **htop command Terminal**
+### Questions
+
+* Is the answer correct?
+* Does the execution time improve?
+* Why not?
+* Was the code parallelized?
+
+**Discuss these questions with the speaker**
+
+### Feedback
+
+If the code answer is correct we can assume the data was copied to the GPU, processed and get it back to the CPU memory as we expect.
+
+## Exercise 2
+
+The process of parallelization is an incremental process, ie, while you are performing small changes to the code, at the same time you have to test whether or not that change improves the execution time of the code. Experts recommend starting this process with the **kernels** directive. As in some cases this directive may be the definitive solution, in other cases it may not. **The kernels directive parallelize our code, but not in the way we expect, because the execution time does not improve and we got a compiler feedback that suggest what is the real problem.**.
+
+Let's give the compiler more information about our code. 
+
+* Place the **loop** directive with the **independent** clause just above the vector sum loop.
+
+```c
+/* Vector sum  */
+#pragma acc loop independent
+for(...) .....;
+```
+
+* Run the code **vector.c**
 
 ```bash
-make run 
+make run
 ```
 
-## Questions
+### Questions
 
-* How many cores this *matrixmult.c* takes to perform its calculation? 
-* Is there paralelism?.
-* How long does the program take to finish?
+* Is the answer correct?
+* Does the execution time improve?
+* Why?
+* What does the **loop** directive do?
+* What does the **independent** clause do?
+
+**Discuss these questions with the speaker**
+
+## Exercise 3
+
+* Place the **loop** directive with the **independent** clause just above the vector multiplication for loop.
+
+```c
+/* Vector multiplication  */
+#pragma acc loop independent
+for(...) .....;
+```
+
+* Run the code **vector.c**
+
+```bash
+make run
+```
+
+### Questions
+
+* Is the answer correct?
+* Does the execution time improve?
+* Why?
+
+**Discuss these questions with the speaker**

@@ -2,8 +2,8 @@
 
 ## Objectives
 
-- [x] You will learn how to create kernels regions and what is its purpose.
-- [x] You will learn how to use the **loop** and the **independent** clause 
+- [x] You will learn how to create **kernels regions** and what is its purpose.
+- [x] You will learn how to use the **loop** directive and the **independent** clause 
 
 ## Introdution
 
@@ -25,18 +25,17 @@ Unlike OpenMP which creates code to be executed in CPU, OpenACC creates code to 
 2. When the calculation is finished in GPU, bring the data back to the CPU memory.
 3. Check the GPU does what we expect.
 
-OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization). In this way the compiler:
+The **kernels** directive carries out the point 1 and 2 by us (this is called automatic paralelization). The **kernels** directive:
 
 * **Tries** to identify which data in a **kernels region** is needed in the GPU memory.
 * Sends the data to the GPU memory.
 * **Tries** to carry out the requested calculations.
 * Sends the data and result back to the CPU memory.
 
-The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization) and move the required data to the GPU memory. **This section is dedicated to the kernels directive**.
-
-As follows is described the format to create a *kernels region* using the **kernels** directive.
+So we must to carry out the 3 point, since not always the compiler does what we expect. The format of a **kernels** directive to create a **kernels región** is described as follows:
 
 ```c
+// Kernels region
 #pragma acc kernels
 {
     // Code to be parallelized here ..
@@ -45,11 +44,37 @@ As follows is described the format to create a *kernels region* using the **kern
 
 ## Exercise 1
 
-* Run the code *vector.c*, take notes of the execution time and valiation.
+Veryfy your code runs correctly in a sequential approach.
+
+* Uncomment this line in your make file
+
+```make
+CFLAGS = -std=c++11 -O3
+```
+
+* Comment these lines
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30 -Minfo=accel
+```
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
+```
+* Run the *matrixmult.c* code
 
 ```bash
 make run
 ```
+
+### Questions
+
+* Take notes of the execution time.
+* Take notes of the validation.
+
+## Exercise 2
+
+Parallelize the code with the **kernels** directive.
 
 * Enclose the following section of code in a **kernels region**.
 
@@ -61,19 +86,23 @@ for(int j=0; j<N; ++j) C[j] = A[j] + B[j];
 for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
 ```
 
-* Comment the following line of your *Makefile*
-
-```make
-CFLAGS = -std=c++11 -O3
-```
-
-* Uncomment the following line of your *Makefile*
+* Uncomment this line in your make file
 
 ```make
 CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
 ```
 
-* Run the code **vector.c**
+* Comment these lines
+
+```make
+# CFLAGS = -std=c++11 -O3
+```
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30 -Minfo=accel
+```
+
+* Run the code
 
 ```bash
 make run

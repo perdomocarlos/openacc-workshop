@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
     }
 
     /* C = A x B */
-    #pragma acc kernels
+    #pragma acc parallel
     {
         for(int i=0;i<N;i++){
             for(int j=0;j<N;j++){
