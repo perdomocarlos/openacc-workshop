@@ -28,14 +28,11 @@ int main(){
 
     }
 
-    #pragma acc kernels
-    {
-        /* Vector sum  */
-        for(int j=0; j<N; ++j) C[j] = A[j] + B[j];
+    /* Vector sum  */
+    for(int j=0; j<N; ++j) C[j] = A[j] + B[j];
 
-        /* Vector multiplicaion */
-        for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
-    }
+    /* Vector multiplicaion */
+    for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
 
 
     /* Checking the answer */

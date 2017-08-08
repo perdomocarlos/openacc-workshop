@@ -12,7 +12,7 @@ COMPILER = pgc++
 # -Minfo=accel, tells the compiler to show GPU code generation steps taken
 
 # Uncomment for sequential execution
-# CFLAGS = -std=c++11 -O3
+CFLAGS = -std=c++11 -O3
 
 # Uncomment to enable OpenACC pragmas in the source code
 # CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30 -Minfo=accel
