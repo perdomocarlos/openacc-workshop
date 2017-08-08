@@ -1,4 +1,4 @@
-# OpeACC Kernels Directive
+# OpenACC Kernels Directive
 
 ## Objectives
 
@@ -25,8 +25,9 @@ However, OpenMP creates code to be executed in CPU and OpenACC to both CPU and G
 * When the calculation is finished in GPU, bring the data back to the CPU memory.
 * Check the GPU does what we expect.
 
-OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization).  The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code. **This section is dedicated to the kernels directive**. The kernels región has the follwing format:
+OpenACC give us two possibilities to express parallelism in our applications. the **kernels** and the **parallel** directives. The former relies on the compiler capabilities to parallelize a given región of code (Automatic Paralelization).  The latter relies on the programer capabilities to bring the compiler with the correct directives to parallellize a given región of code (Non-Automatic Parallelization). **This section is dedicated to the kernels directive**.
 
+As follows is described the format to create a *kernels region* using the **kernels** directive.
 
 ```c
 #pragma acc kernels
@@ -51,6 +52,12 @@ for(int j=0; j<N; ++j) C[j] = A[j] + B[j];
 
 /* Vector multiplicaion */
 for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
+```
+
+* Comment the following line of your *Makefile*
+
+```make
+CFLAGS = -std=c++11 -O3
 ```
 
 * Uncomment the following line of your *Makefile*
@@ -103,6 +110,8 @@ make run
 * Is the answer correct?
 * Does the execution time improve?
 * Why?
+* What does the **loop** directive do?
+* What does the **independent** clause do?
 
 **Discuss these questions with the speaker**
 
