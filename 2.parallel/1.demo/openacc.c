@@ -1,5 +1,6 @@
 #include <stdio.h>  /* Standard I/O Library: printf */
 #include <stdlib.h> /* Standard Library: malloc, calloc, free, ralloc */
+#include <string.h>     /* String funtions: strcpy*/
 #include <chrono>   /* Console Debug */
 #include <thread>   /* Console Debug */
 #include <math.h>
@@ -119,7 +120,7 @@ void savetime(float time){
 void evolve(bool ** in, bool ** out){
     clock_t start = 0.0, end = 0.0;
     double sum = 0.0;
-    char filename[30];
+    
 
     int rowDim = SIZE;
     int colDim = SIZE;
@@ -127,6 +128,7 @@ void evolve(bool ** in, bool ** out){
 
     // Save CA initial configuration
     #ifdef SAVEINIT
+    char filename[30];
     sprintf(filename,"dim_%d_gen_%d.dat",rowDim,0);
     save(filename,in);
     #endif
@@ -144,6 +146,13 @@ void evolve(bool ** in, bool ** out){
                     in_new[i][j] = nextState(in,i,j);
                 }
             }
+
+            // Print every generation by console
+            #ifdef DEBUG
+            see(in);
+            std::this_thread::sleep_for(std::chrono::duration<double>(0.3));
+            printf("\033[H\033[J");
+            #endif
 
             #pragma acc parallel loop
             for (int i = 0; i < rowDim; ++i){
@@ -197,6 +206,25 @@ int main(int argc, char const **argv)
     initialize(out);
     fillCellularSpace(in);
     evolve(in,out);
+
+    /* Checking the answer */
+    char validation[10];
+    strcpy(validation,"Ok");
+    if(in[6][11] != 1) strcpy(validation,"Fail");
+    if(in[7][11] != 1) strcpy(validation,"Fail");
+    if(in[8][11] != 1) strcpy(validation,"Fail");
+    if(in[12][11] != 1) strcpy(validation,"Fail");
+    if(in[13][11] != 1) strcpy(validation,"Fail");
+    if(in[14][11] != 1) strcpy(validation,"Fail");
+    if(in[10][7] != 1) strcpy(validation,"Fail");
+    if(in[10][8] != 1) strcpy(validation,"Fail");
+    if(in[10][9] != 1) strcpy(validation,"Fail");
+    if(in[10][13] != 1) strcpy(validation,"Fail");
+    if(in[10][14] != 1) strcpy(validation,"Fail");
+    if(in[10][15] != 1) strcpy(validation,"Fail");
+
+
+    printf ( "\nSize %d, Validation %s\n", SIZE, validation );
 
     /* -- Releasing resources -- */
     for (i=0; i<rowDim; ++i) free(in[i]);

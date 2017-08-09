@@ -4,6 +4,7 @@ EXT = .c
 COMPILER = pgc++
 
 # HABAILABLE FLAGS
+# -D DEBUG prin every generation by console
 # -D SAVEINIT save the initial configuration in a file
 # -D SAVELAST save the last configuration in a file
 # -D TIME Save average generation calculation time
@@ -15,19 +16,22 @@ COMPILER = pgc++
 # -Minfo=accel OpenAcc code transformation feedback
 
 # DEBUG SETTINGS
-D_GENERATIONS = 100
+D_GENERATIONS = 50
 D_SIZE = 20
-D_FLAGS = -D TIME -D SAVEINIT -D SAVELAST
-D_CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
-# D_CFLAGS = -std=c++11 -O3 -acc -ta=nvidia,time -Minfo=accel
+D_FLAGS = -D DEBUG -D TIME
+D_CFLAGS = -std=c++11 -O3
 
 # EXPERIMENT SETTINGS
 GENERATIONS = 100
 SIZES = 250 500 750 1000 1250 1500
 ITERATIONS = 1 2 3
-FLAGS = -D TIME -D SAVEINIT -D SAVELAST 
-CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30,time -Minfo=accel
-# CFLAGS = -std=c++11 -O3 -acc -ta=nvidia,time -Minfo=accel
+FLAGS = -D TIME
+
+# Uncomment for sequential execution test
+# CFLAGS = -std=c++11 -O3
+
+# Uncomment for parallel execution test
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30
 
 # Run in debug mode
 debug: clean compiledebug
