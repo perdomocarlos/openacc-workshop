@@ -3,7 +3,8 @@
 ## Objectives
 
 - [x] You will learn how to create **kernels regions** and what is its purpose.
-- [x] You will learn how to use the **loop** directive and the **independent** clause 
+- [x] You will learn how to use the **loop** directive and the **independent** clause
+- [x] You will learn why it is not always necessary to parallelize a code
 
 ## Introdution
 
@@ -170,7 +171,6 @@ make run
 ### Questions
 
 * Is the answer correct?
-* Does the execution time improve?
-* Why?
+* **Why does not the runtime improve with parallelization?**
 
 **Discuss these questions with the speaker**

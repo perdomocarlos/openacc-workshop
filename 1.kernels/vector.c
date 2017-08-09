@@ -33,8 +33,7 @@ int main(){
 
     /* Vector multiplicaion */
     for(int j=0; j<N; ++j) D[j] = A[j] * B[j];
-
-
+    
     /* Checking the answer */
     char validation[10];
     strcpy(validation,"Ok");

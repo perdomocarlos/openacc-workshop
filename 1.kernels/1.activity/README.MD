@@ -4,6 +4,7 @@
 
 - [x] You will evidence a case in which the **kernels** directive alone does not work properly
 - [x] You will learn how to give the compiler more information about your code.
+- [x] You will learn in which cases a code can benefit from the parallelization.
 
 ## Introdution
 
@@ -152,4 +153,6 @@ make run
 * Why?
 * Take notes about the execution time.
 * In what exercise of this section did the code run faster?
-* **Ask the speaker how does this code work?**
+* **Why does the runtime improve with parallelization?**
+
+* **Ask the speaker how does this code work**
