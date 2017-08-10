@@ -19,3 +19,41 @@ When we use the **parallel** directive, the compiler relies on our capabilities 
 Some problems require a more detailed treatment in the way the threads are executed, this detailed treatment is made possible by means of the parallel directive. 
 
 The code **1.demo** is an example of the parallel directive in action.
+
+## Running the 1.demo in a sequential approach
+
+* Uncomment this line in your *Makefile*
+
+```make
+CFLAGS = -std=c++11 -O3
+```
+
+* Comment this line
+
+```make
+# CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30
+```
+* Run the code 
+
+```bash
+make run
+```
+
+## Running the 1.demo in a parallel approach
+
+* Uncomment this line in your *Makefile*
+
+```make
+CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30
+```
+
+* Comment this line
+
+```make
+# CFLAGS = -std=c++11 -O3
+```
+* Run the code 
+
+```bash
+make run
+```

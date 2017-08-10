@@ -28,7 +28,7 @@ ITERATIONS = 1 2 3
 FLAGS = -D TIME
 
 # Uncomment for sequential execution test
-# CFLAGS = -std=c++11 -O3
+CFLAGS = -std=c++11 -O3
 
 # Uncomment for parallel execution test
 # CFLAGS = -std=c++11 -O3 -acc -ta=tesla:cc30
